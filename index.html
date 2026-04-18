@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<!-- saved from url=(0050)file:///C:/Users/ELITEBOOK/Downloads/index_19.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stabilizer Activity Checker — Epoch 3</title>
+  <script src="./index_files/chart.umd.js.download"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #e8f5e9; --card: #ffffff; --sec: #f1faf2; --inp: #ffffff;
+      --t: #1a2e1a; --ts: #4a6b4a; --tt: #7a9b7a;
+      --b: rgba(0,100,0,0.12); --bf: #1D9E75;
+      --mb: #d4edda; --mt: #1a2e1a;
+      --swb: #dbeafe; --swt: #1e40af;
+      --bab: #fef3c7; --bat: #92400e;
+      --ob: #e5e7eb; --ot: #374151;
+      --ok: #15803d;
+      --btn: #1D9E75; --bth: #e8f5e9; --bthv: #0F6E56;
+      --lk: #0f6e56; --tg: #c8e6c9; --ti: #1D9E75;
+      --sp: #ede9fe; --spt: #4c1d95;
+      --nft: #fdf2f8; --nftt: #86198f;
+      --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --mono: 'SF Mono', 'Fira Code', monospace;
+    }
+
+    .dark {
+      --bg: #0f1a0f; --card: #1a2e1a; --sec: #152515; --inp: #1a2e1a;
+      --t: #e8f5e9; --ts: #9fc99f; --tt: #6b9b6b;
+      --b: rgba(144,238,144,0.12); --bf: #5DCAA5;
+      --mb: #152515; --mt: #e8f5e9;
+      --swb: #1e3a5f; --swt: #93c5fd;
+      --bab: #3a2a00; --bat: #fcd34d;
+      --ob: #2a2a2a; --ot: #d1d5db;
+      --ok: #4ade80;
+      --btn: #1D9E75; --bth: #e8f5e9; --bthv: #0F6E56;
+      --lk: #5DCAA5; --tg: #1a3a1a; --ti: #5DCAA5;
+      --sp: #2e1065; --spt: #c4b5fd;
+      --nft: #2d1030; --nftt: #e879f9;
+    }
+
+    html, body { height: 100%; }
+    body { font-family: var(--font); background: var(--bg); color: var(--t); min-height: 100vh; transition: background .2s, color .2s; }
+
+    /* Topbar */
+    .topbar { display: flex; align-items: center; gap: 10px; padding: 13px 24px; background: var(--card); border-bottom: .5px solid var(--b); position: sticky; top: 0; z-index: 10; }
+    .logo { width: 34px; height: 34px; border-radius: 8px; background: #1D9E75; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500; color: #e8f5e9; flex-shrink: 0; }
+    .tb-title { font-size: 15px; font-weight: 500; color: var(--t); }
+    .tb-net { font-size: 11px; background: var(--mb); color: var(--ts); border-radius: 20px; padding: 3px 9px; display: inline-flex; align-items: center; gap: 5px; }
+    .ndot { width: 6px; height: 6px; border-radius: 50%; background: #1D9E75; }
+    .ep-badge { font-size: 11px; background: var(--sp); color: var(--spt); border-radius: 20px; padding: 3px 9px; font-weight: 500; }
+    .spacer { margin-left: auto; }
+    .tgl { width: 34px; height: 34px; border-radius: 50%; background: var(--tg); border: .5px solid var(--b); display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; transition: opacity .15s; }
+    .tgl:hover { opacity: .75; }
+    .tgl svg { width: 16px; height: 16px; stroke: var(--ti); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+    /* Hero */
+    .hero { text-align: center; padding: 2.5rem 1rem 1.5rem; }
+    .hero-logo { width: 54px; height: 54px; border-radius: 14px; background: #1D9E75; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 500; color: #e8f5e9; margin: 0 auto .875rem; }
+    .hero h1 { font-size: 21px; font-weight: 500; color: var(--t); margin-bottom: 6px; }
+    .hero p { font-size: 13px; color: var(--ts); }
+
+    /* Search */
+    .sw { max-width: 560px; margin: 0 auto 1.5rem; padding: 0 1rem; }
+    .sr { display: flex; gap: 8px; }
+    .sr input { flex: 1; padding: 11px 14px; border: .5px solid var(--b); border-radius: 8px; font-size: 13px; font-family: var(--mono); background: var(--inp); color: var(--t); transition: border .15s, box-shadow .15s; }
+    .sr input:focus { outline: none; border-color: var(--bf); box-shadow: 0 0 0 2px rgba(29,158,117,.15); }
+    .sr input::placeholder { color: var(--tt); font-family: var(--font); }
+    .sr button { padding: 11px 22px; border: none; border-radius: 8px; background: var(--btn); color: var(--bth); font-size: 13px; font-weight: 500; cursor: pointer; flex-shrink: 0; transition: background .15s; }
+    .sr button:hover { background: var(--bthv); }
+    .sr button:active { transform: scale(.98); }
+    .hint { font-size: 11px; color: var(--tt); margin-top: 7px; text-align: center; }
+
+    /* Error */
+    .err { max-width: 560px; margin: 0 auto 1rem; padding: 0 1rem; }
+    .ei { background: #fee2e2; color: #991b1b; border-radius: 8px; padding: 10px 14px; font-size: 13px; display: none; }
+    .dark .ei { background: #3a0f0f; color: #fca5a5; }
+
+    /* Results */
+    .res { max-width: 720px; margin: 0 auto; padding: 0 1rem 3rem; }
+
+    .wc { display: flex; align-items: center; gap: 10px; margin-bottom: 1rem; padding: 13px 16px; background: var(--card); border: .5px solid var(--b); border-radius: 12px; }
+    .wa { width: 38px; height: 38px; border-radius: 50%; background: var(--mb); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 500; color: #085041; flex-shrink: 0; }
+    .dark .wa { color: #9fe1cb; }
+    .wl { font-size: 13px; font-weight: 500; color: var(--t); }
+    .wad { font-size: 11px; font-family: var(--mono); color: var(--ts); word-break: break-all; }
+    .nb { margin-left: auto; font-size: 11px; background: var(--mb); color: var(--ts); border-radius: 20px; padding: 3px 9px; display: inline-flex; align-items: center; gap: 4px; flex-shrink: 0; }
+    .cn { font-size: 11px; color: var(--tt); text-align: center; margin-bottom: 1rem; }
+    .sl { font-size: 11px; font-weight: 500; color: var(--tt); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; margin-top: 1rem; }
+
+    /* Metric grids */
+    .m3 { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 8px; margin-bottom: 8px; }
+    @media (max-width: 480px) { .m3 { grid-template-columns: 1fr; } }
+    .mc { background: var(--mb); border-radius: 8px; padding: 13px 15px; }
+    .mc.sp { background: var(--sp); }
+    .mc.nft { background: var(--nft); }
+    .mc.rank { background: #c8e6c9; }
+    .dark .mc.rank { background: #1a3a1a; }
+    .ml { font-size: 11px; color: var(--ts); margin-bottom: 5px; }
+    .mc.sp .ml { color: var(--spt); opacity: .85; }
+    .mc.nft .ml { color: var(--nftt); opacity: .85; }
+    .mc.rank .ml { color: #085041; }
+    .dark .mc.rank .ml { color: #9fe1cb; }
+    .mv { font-size: 22px; font-weight: 500; color: var(--mt); line-height: 1; }
+    .mc.sp .mv { color: var(--spt); }
+    .mc.nft .mv { color: var(--nftt); }
+    .mc.rank .mv { color: #0f6e56; font-size: 26px; }
+    .dark .mc.rank .mv { color: #5DCAA5; }
+    .msub { font-size: 10px; color: var(--tt); margin-top: 4px; }
+    .mc.sp .msub { color: var(--spt); opacity: .6; }
+    .mc.nft .msub { color: var(--nftt); opacity: .6; }
+    .mc.rank .msub { color: #4a6b4a; }
+    .dark .mc.rank .msub { color: #9fc99f; }
+
+    /* Cards */
+    .card { background: var(--card); border: .5px solid var(--b); border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 1rem; }
+    .ct { font-size: 14px; font-weight: 500; color: var(--t); margin-bottom: 3px; }
+    .cs { font-size: 12px; color: var(--ts); margin-bottom: 1rem; }
+
+    /* Token holdings */
+    .tok-row { display: flex; align-items: center; justify-content: space-between; padding: 9px 0; border-bottom: .5px solid var(--b); }
+    .tok-row:last-child { border-bottom: none; }
+    .tok-left { display: flex; align-items: center; gap: 10px; }
+    .tok-badge { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 500; flex-shrink: 0; }
+    .tok-name { font-size: 12px; font-weight: 500; color: var(--t); }
+    .tok-addr { font-size: 10px; color: var(--tt); font-family: var(--mono); }
+    .tok-right { text-align: right; }
+    .tok-bal { font-size: 13px; font-weight: 500; color: var(--t); }
+    .tok-sub { font-size: 10px; color: var(--ts); }
+
+    /* Swap volume */
+    .swap-row { display: flex; align-items: center; justify-content: space-between; padding: 9px 0; border-bottom: .5px solid var(--b); }
+    .swap-row:last-child { border-bottom: none; }
+    .swap-left { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500; color: var(--t); }
+    .swap-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+    .swap-right { text-align: right; }
+    .swap-amt { font-size: 13px; font-weight: 500; color: var(--t); }
+    .swap-sub { font-size: 10px; color: var(--ts); }
+
+    /* NFT grid */
+    .nft-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px,1fr)); gap: 10px; }
+    .nft-card { border: .5px solid var(--b); border-radius: 10px; padding: 14px 12px; background: var(--nft); text-align: center; }
+    .nft-icon { width: 50px; height: 50px; border-radius: 12px; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 22px; }
+    .nft-id { font-size: 12px; font-weight: 500; color: var(--nftt); }
+    .nft-ep { font-size: 10px; color: var(--ts); margin-top: 3px; }
+    .nft-link { font-size: 10px; color: var(--lk); text-decoration: none; display: block; margin-top: 5px; }
+    .nft-link:hover { text-decoration: underline; }
+
+    /* Daily breakdown */
+    .dr-row { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: .5px solid var(--b); }
+    .dr-row:last-child { border-bottom: none; }
+    .dr-date { font-size: 12px; color: var(--ts); }
+    .dr-stats { display: flex; gap: 14px; }
+    .dr-s { text-align: right; }
+    .dr-v { font-size: 11px; font-weight: 500; color: var(--t); }
+    .dr-l { font-size: 10px; color: var(--tt); }
+
+    /* Chart legend */
+    .lg { display: flex; gap: 14px; margin-bottom: 10px; flex-wrap: wrap; }
+    .li { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--ts); }
+    .ld { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+
+    /* Tx history */
+    .tx-row { display: flex; align-items: center; gap: 8px; padding: 9px 0; border-bottom: .5px solid var(--b); }
+    .tx-row:last-child { border-bottom: none; }
+    .tx-type { font-size: 11px; font-weight: 500; padding: 3px 8px; border-radius: 20px; flex-shrink: 0; }
+    .tx-sw { background: var(--swb); color: var(--swt); }
+    .tx-ba { background: var(--bab); color: var(--bat); }
+    .tx-ot { background: var(--ob); color: var(--ot); }
+    .tx-hash { font-size: 12px; color: var(--lk); font-family: var(--mono); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-decoration: none; }
+    .tx-hash:hover { text-decoration: underline; }
+    .tx-val { font-size: 11px; color: var(--ts); flex-shrink: 0; }
+    .tx-sp { font-size: 10px; background: var(--sp); color: var(--spt); padding: 2px 6px; border-radius: 20px; flex-shrink: 0; }
+    .tx-age { font-size: 10px; color: var(--tt); flex-shrink: 0; min-width: 52px; text-align: right; }
+
+    .loading { text-align: center; padding: 1.5rem; color: var(--ts); font-size: 13px; }
+    .empty { padding: 10px 0; color: var(--ts); font-size: 13px; }
+
+    footer { text-align: center; padding: 2rem; font-size: 12px; color: var(--tt); }
+    footer a { color: var(--lk); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body id="app">
+
+  <div class="topbar">
+    <div class="logo">ST</div>
+    <span class="tb-title">Stabilizer</span>
+    <div class="tb-net"><span class="ndot"></span>Sepolia testnet</div>
+    <div class="ep-badge">⚡ Epoch 3</div>
+    <div class="spacer"></div>
+    <div class="tgl" onclick="toggleTheme()" title="Toggle dark / light mode">
+      <svg id="themeIcon" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="5"></circle>
+        <line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+        <line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+      </svg>
+    </div>
+  </div>
+
+  <div class="hero">
+    <div class="hero-logo">ST</div>
+    <h1>Stabilizer activity checker</h1>
+    <p>Paste any wallet address to view Stabilizer Epoch 3 activity on Sepolia</p>
+  </div>
+
+  <div class="sw">
+    <div class="sr">
+      <input type="text" id="wi" placeholder="Paste wallet address (0x...)" maxlength="42">
+      <button onclick="go()">Search</button>
+    </div>
+    <div class="hint">Checks swaps · token balances · NFT badges · SP earned · testnet rank · Epoch 3</div>
+  </div>
+
+  <div class="err"><div class="ei" id="ei"></div></div>
+
+  <div id="results" style="display:none">
+    <div class="res">
+
+      <div class="wc">
+        <div class="wa" id="wava">0x</div>
+        <div style="min-width:0;flex:1">
+          <div class="wl">Wallet</div>
+          <div class="wad" id="waddr">—</div>
+        </div>
+        <div class="nb"><span class="ndot"></span>Sepolia · Epoch 3</div>
+      </div>
+      <div class="cn" id="cn"></div>
+
+      <div class="sl">Overview</div>
+      <div class="m3">
+        <div class="mc"><div class="ml">Total swaps</div><div class="mv" id="m-sw">—</div><div class="msub">swap interactions</div></div>
+        <div class="mc nft"><div class="ml">NFT badges</div><div class="mv" id="m-bg">—</div><div class="msub">badges held</div></div>
+        <div class="mc"><div class="ml">Active days</div><div class="mv" id="m-dy">—</div><div class="msub">days on-chain</div></div>
+      </div>
+      <div class="m3">
+        <div class="mc sp"><div class="ml">SP earned</div><div class="mv" id="m-sp">—</div><div class="msub">total stability pts</div></div>
+        <div class="mc sp"><div class="ml">SP today</div><div class="mv" id="m-st">—</div><div class="msub">earned today</div></div>
+        <div class="mc rank"><div class="ml">Testnet rank</div><div class="mv" id="m-rk">—</div><div class="msub" id="m-rs">by SP earned</div></div>
+      </div>
+
+      <div class="sl">Stablecoin holdings</div>
+      <div class="card">
+        <div class="ct">Token balances</div>
+        <div class="cs">Current USDC · USDT · USDS · USDZ held in this wallet</div>
+        <div id="tok-hold"><div class="loading">Fetching balances...</div></div>
+      </div>
+
+      <div class="sl">Swap volume by token</div>
+      <div class="card">
+        <div class="ct">Per-token swap volume</div>
+        <div class="cs">Total transfer volume for USDC · USDT · USDS · USDZ from this wallet</div>
+        <div id="swap-vol"><div class="loading">Calculating volumes...</div></div>
+      </div>
+
+      <div class="sl">NFT badges — Epoch 3</div>
+      <div class="card">
+        <div class="ct">NFT rewards</div>
+        <div class="cs">Badges earned and held · contract: 0x62F9cEBeC3de83005a3ecB2DC328EBdeAC2aC6C9</div>
+        <div id="nft-list"><div class="loading">Scanning NFTs...</div></div>
+      </div>
+
+      <div class="card">
+        <div class="ct">Daily breakdown</div>
+        <div class="cs">Swaps · badges · ETH volume · SP earned per day</div>
+        <div id="daily"><div class="loading">Loading...</div></div>
+      </div>
+
+      <div class="card">
+        <div class="ct">Activity over time</div>
+        <div class="cs">Transaction count and SP earned by day</div>
+        <div class="lg">
+          <span class="li"><span class="ld" style="background:#1D9E75"></span>Transactions</span>
+          <span class="li"><span class="ld" style="background:#7F77DD"></span>SP earned</span>
+        </div>
+        <div style="position:relative;width:100%;height:220px;"><canvas id="actChart"></canvas></div>
+      </div>
+
+      <div class="card">
+        <div class="ct">Transaction history</div>
+        <div class="cs" id="tx-sub">Latest interactions with Stabilizer contract</div>
+        <div class="lg">
+          <span class="li"><span class="ld" style="background:#1e40af"></span>Swap</span>
+          <span class="li"><span class="ld" style="background:#92400e"></span>Badge</span>
+          <span class="li"><span class="ld" style="background:#6b7280"></span>Other</span>
+        </div>
+        <div id="txlist"><div class="loading">—</div></div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>
+    Powered by <a href="https://app.stabilizer.finance/" target="_blank">Stabilizer Finance</a>
+    &nbsp;·&nbsp;
+    <a href="https://sepolia.etherscan.io/" target="_blank">Sepolia Etherscan</a>
+    &nbsp;·&nbsp; Epoch 3
+  </footer>
+
+  <script>
+    // ── Contract addresses ──────────────────────────────────────────────────
+    const CONTRACT     = '0xFa6419a3d3503a016dF3A59F690734862CA2A78D';
+    const NFT_CONTRACT = '0x62F9cEBeC3de83005a3ecB2DC328EBdeAC2aC6C9';
+    const API_KEY      = '4IIBB8SINER3D38Z7QH8KJI8Y5UGVXNTEB';
+    const BASE         = 'https://api.etherscan.io/v2/api';
+    const CHAIN        = '11155111';
+
+    const SP_SWAP = 10, SP_BADGE = 50, SP_TX = 2;
+
+    const TOKENS = {
+      USDC: { addr: '0x94a9D9AC8a22534E3FaCa9F4e7F2E2cf85d5E4C8', dec: 6,  color: '#2775ca', bg: '#dbeafe', label: 'USD Coin' },
+      USDT: { addr: '0xaA8E23Fb1079EA71e0a56F48a2aA51851D8433D0', dec: 6,  color: '#26a17b', bg: '#d1fae5', label: 'Tether USD' },
+      USDS: { addr: '0xF85938e2Bfc178026f60c5Ea50cC347D42C73b3D', dec: 18, color: '#f59e0b', bg: '#fef3c7', label: 'Sky USD' },
+      USDZ: { addr: '0x55Cc481D28Db3f1ffc9347745AA6fbB940505BdD', dec: 18, color: '#6c4ecb', bg: '#ede9fe', label: 'USDZ (Native)' }
+    };
+
+    let actChart = null, isDark = false;
+
+    const SUN  = `<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>`;
+    const MOON = `<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>`;
+
+    function toggleTheme() {
+      isDark = !isDark;
+      document.getElementById('app').className = isDark ? 'dark' : '';
+      document.getElementById('themeIcon').innerHTML = isDark ? SUN : MOON;
+    }
+
+    document.getElementById('wi').addEventListener('keydown', e => { if (e.key === 'Enter') go(); });
+
+    function showErr(m) { const e = document.getElementById('ei'); e.textContent = m; e.style.display = 'block'; }
+    function clearErr() { document.getElementById('ei').style.display = 'none'; }
+    function isValid(a) { return /^0x[0-9a-fA-F]{40}$/.test(a); }
+
+    function timeAgo(ts) {
+      const s = Math.floor(Date.now()/1000) - parseInt(ts);
+      if (s < 60)    return s + 's ago';
+      if (s < 3600)  return Math.floor(s/60) + 'm ago';
+      if (s < 86400) return Math.floor(s/3600) + 'h ago';
+      return Math.floor(s/86400) + 'd ago';
+    }
+
+    function shortHash(h) { return h.slice(0,8) + '...' + h.slice(-6); }
+    function shortAddr(a) { return a.slice(0,6) + '...' + a.slice(-4); }
+    function weiToEth(w)  { return (parseFloat(w)/1e18).toFixed(4); }
+
+    function classifyTx(tx) {
+      const fn  = (tx.functionName || '').toLowerCase();
+      const inp = (tx.input || '').toLowerCase();
+      if (fn.includes('swap') || inp.startsWith('0x38ed1739') || inp.startsWith('0x7ff36ab5') || inp.startsWith('0x18cbafe5')) return 'swap';
+      if (fn.includes('badge') || fn.includes('mint') || fn.includes('award') || fn.includes('earn') || fn.includes('claim')) return 'badge';
+      return 'other';
+    }
+
+    function calcSP(t) { return t === 'swap' ? SP_SWAP : t === 'badge' ? SP_BADGE : SP_TX; }
+
+    async function apiGet(params) {
+      const r = await fetch(`${BASE}?chainid=${CHAIN}&${params}&apikey=${API_KEY}`);
+      return r.json();
+    }
+
+    async function getTokenBal(wallet, tok) {
+      try {
+        const d = await apiGet(`module=account&action=tokenbalance&contractaddress=${tok.addr}&address=${wallet}&tag=latest`);
+        return d.status === '1' ? parseFloat(d.result) / Math.pow(10, tok.dec) : 0;
+      } catch { return 0; }
+    }
+
+    async function getTokenTxs(wallet, tok) {
+      try {
+        const d = await apiGet(`module=account&action=tokentx&contractaddress=${tok.addr}&address=${wallet}&startblock=0&endblock=99999999&sort=desc`);
+        return d.status === '1' && Array.isArray(d.result) ? d.result : [];
+      } catch { return []; }
+    }
+
+    async function getNFTs(wallet) {
+      try {
+        const d = await apiGet(`module=account&action=tokennfttx&contractaddress=${NFT_CONTRACT}&address=${wallet}&startblock=0&endblock=99999999&sort=desc`);
+        return d.status === '1' && Array.isArray(d.result) ? d.result : [];
+      } catch { return []; }
+    }
+
+    async function getNFTBalance(wallet) {
+      try {
+        const d = await apiGet(`module=account&action=tokenbalance&contractaddress=${NFT_CONTRACT}&address=${wallet}&tag=latest`);
+        return d.status === '1' ? parseInt(d.result) : 0;
+      } catch { return 0; }
+    }
+
+    async function getRank(wallet) {
+      try {
+        const d = await apiGet(`module=account&action=txlist&address=${CONTRACT}&startblock=0&endblock=99999999&sort=desc`);
+        if (d.status !== '1' || !Array.isArray(d.result)) return '—';
+        const sc = {};
+        d.result.forEach(tx => {
+          const f = tx.from.toLowerCase();
+          if (!sc[f]) sc[f] = 0;
+          sc[f] += calcSP(classifyTx(tx));
+        });
+        const sorted = Object.entries(sc).sort((a,b) => b[1] - a[1]);
+        const pos    = sorted.findIndex(([a]) => a === wallet.toLowerCase());
+        return pos >= 0 ? '#' + (pos + 1) : '—';
+      } catch { return '—'; }
+    }
+
+    async function go() {
+      const raw = document.getElementById('wi').value.trim();
+      clearErr();
+      if (!raw) { showErr('Please enter a wallet address.'); return; }
+      if (!isValid(raw)) { showErr('Invalid address — must start with 0x and be 42 characters long.'); return; }
+      await load(raw);
+    }
+
+    async function load(wallet) {
+      document.getElementById('results').style.display = 'none';
+      ['m-sw','m-bg','m-dy','m-sp','m-st','m-rk'].forEach(id => document.getElementById(id).textContent = '—');
+      document.getElementById('txlist').innerHTML       = '<div class="loading">Loading transactions...</div>';
+      document.getElementById('daily').innerHTML        = '<div class="loading">Building breakdown...</div>';
+      document.getElementById('tok-hold').innerHTML     = '<div class="loading">Fetching balances...</div>';
+      document.getElementById('swap-vol').innerHTML     = '<div class="loading">Calculating volumes...</div>';
+      document.getElementById('nft-list').innerHTML     = '<div class="loading">Scanning NFTs...</div>';
+      document.getElementById('m-rk').textContent      = '...';
+
+      try {
+        const [txData, usdcB, usdtB, usdsB, usdzB, usdcTx, usdtTx, usdsTx, usdzTx, nftTxs, nftBal] = await Promise.all([
+          apiGet(`module=account&action=txlist&address=${wallet}&startblock=0&endblock=99999999&sort=desc`),
+          getTokenBal(wallet, TOKENS.USDC), getTokenBal(wallet, TOKENS.USDT),
+          getTokenBal(wallet, TOKENS.USDS), getTokenBal(wallet, TOKENS.USDZ),
+          getTokenTxs(wallet, TOKENS.USDC), getTokenTxs(wallet, TOKENS.USDT),
+          getTokenTxs(wallet, TOKENS.USDS), getTokenTxs(wallet, TOKENS.USDZ),
+          getNFTs(wallet), getNFTBalance(wallet)
+        ]);
+
+        if (txData.status === '0' && txData.message !== 'No transactions found') {
+          showErr('API error: ' + (txData.result || txData.message)); return;
+        }
+
+        const allTxs = Array.isArray(txData.result) ? txData.result : [];
+        const txs    = allTxs.filter(tx =>
+          (tx.to   && tx.to.toLowerCase()   === CONTRACT.toLowerCase()) ||
+          (tx.from && tx.from.toLowerCase() === CONTRACT.toLowerCase())
+        );
+
+        document.getElementById('waddr').textContent = wallet;
+        document.getElementById('wava').textContent  = wallet.slice(2,4).toUpperCase();
+        document.getElementById('cn').textContent    = `${txs.length} interaction${txs.length !== 1 ? 's' : ''} with Stabilizer contract · ${shortAddr(CONTRACT)}`;
+        document.getElementById('results').style.display = 'block';
+
+        let swaps = 0, badges = 0, totalSP = 0;
+        const byDay = {};
+        const today = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+
+        txs.forEach(tx => {
+          const type = classifyTx(tx), sp = calcSP(type);
+          if (type === 'swap')  swaps++;
+          if (type === 'badge') badges++;
+          totalSP += sp;
+          const key = new Date(parseInt(tx.timeStamp)*1000).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+          if (!byDay[key]) byDay[key] = { swaps: 0, badges: 0, vol: 0, sp: 0, tx: 0 };
+          byDay[key].tx++;
+          byDay[key].vol += parseFloat(tx.value||0) / 1e18;
+          byDay[key].sp  += sp;
+          if (type === 'swap')  byDay[key].swaps++;
+          if (type === 'badge') byDay[key].badges++;
+        });
+
+        document.getElementById('m-sw').textContent = swaps.toLocaleString();
+        document.getElementById('m-bg').textContent = nftBal.toLocaleString();
+        document.getElementById('m-dy').textContent = Object.keys(byDay).length.toLocaleString();
+        document.getElementById('m-sp').textContent = totalSP.toLocaleString();
+        document.getElementById('m-st').textContent = (byDay[today] ? byDay[today].sp : 0).toLocaleString();
+        document.getElementById('tx-sub').textContent = `${txs.length} total interaction${txs.length !== 1 ? 's' : ''} with Stabilizer contract`;
+
+        getRank(wallet).then(r => { document.getElementById('m-rk').textContent = r; });
+
+        // ── Token holdings ─────────────────────────────────────────────────
+        const bals = [
+          { tok: 'USDC', b: usdcB }, { tok: 'USDT', b: usdtB },
+          { tok: 'USDS', b: usdsB }, { tok: 'USDZ', b: usdzB }
+        ];
+        document.getElementById('tok-hold').innerHTML = bals.map(({ tok, b }) => {
+          const t = TOKENS[tok];
+          return `<div class="tok-row">
+            <div class="tok-left">
+              <div class="tok-badge" style="background:${t.bg};color:${t.color}">${tok}</div>
+              <div><div class="tok-name">${t.label}</div><div class="tok-addr">${shortAddr(t.addr)}</div></div>
+            </div>
+            <div class="tok-right">
+              <div class="tok-bal">${b.toLocaleString(undefined,{maximumFractionDigits:2})} ${tok}</div>
+              <div class="tok-sub">${tok === 'USDZ' ? 'native Stabilizer token' : tok === 'USDS' ? 'Sky USD · Epoch 3' : 'testnet stablecoin'}</div>
+            </div>
+          </div>`;
+        }).join('');
+
+        // ── Swap volumes ────────────────────────────────────────────────────
+        const calcVol   = (txs, tok) => txs.filter(t => t.from.toLowerCase() === wallet.toLowerCase() || t.to.toLowerCase() === wallet.toLowerCase()).reduce((s,t) => s + parseFloat(t.value||0) / Math.pow(10, parseInt(t.tokenDecimal||TOKENS[tok].dec)), 0);
+        const calcSwaps = (txs)      => txs.filter(t => t.from.toLowerCase() === wallet.toLowerCase()).length;
+
+        const vols     = { USDC: calcVol(usdcTx,'USDC'), USDT: calcVol(usdtTx,'USDT'), USDS: calcVol(usdsTx,'USDS'), USDZ: calcVol(usdzTx,'USDZ') };
+        const swapCnts = { USDC: calcSwaps(usdcTx), USDT: calcSwaps(usdtTx), USDS: calcSwaps(usdsTx), USDZ: calcSwaps(usdzTx) };
+        const totalVol = Object.values(vols).reduce((a,b) => a+b, 0) || 1;
+
+        document.getElementById('swap-vol').innerHTML = Object.keys(TOKENS).map(tok => {
+          const t = TOKENS[tok];
+          return `<div class="swap-row">
+            <div class="swap-left"><span class="swap-dot" style="background:${t.color}"></span>${tok}</div>
+            <div class="swap-right">
+              <div class="swap-amt">${vols[tok].toLocaleString(undefined,{maximumFractionDigits:2})}</div>
+              <div class="swap-sub">${swapCnts[tok]} transfers · ${((vols[tok]/totalVol)*100).toFixed(1)}% of volume</div>
+            </div>
+          </div>`;
+        }).join('');
+
+        // ── NFT badges ──────────────────────────────────────────────────────
+        if (nftBal === 0 && nftTxs.length === 0) {
+          document.getElementById('nft-list').innerHTML = '<div class="empty">No NFT badges found for this wallet yet. Earn badges by trading on Stabilizer during Epoch 3!</div>';
+        } else {
+          const received  = nftTxs.filter(t => t.to.toLowerCase() === wallet.toLowerCase());
+          const tokenIds  = [...new Set(received.map(t => t.tokenID))].slice(0, 12);
+          const nftColors = ['#f0abfc,#a78bfa','#a78bfa,#67e8f9','#67e8f9,#86efac','#86efac,#fde68a','#fde68a,#fca5a5','#fca5a5,#f0abfc'];
+          if (tokenIds.length === 0) {
+            document.getElementById('nft-list').innerHTML = `<div class="empty">Wallet holds ${nftBal} NFT badge${nftBal !== 1 ? 's' : ''}. View on <a href="https://sepolia.etherscan.io/token/${NFT_CONTRACT}?a=${wallet}" target="_blank" style="color:var(--lk)">Etherscan ↗</a></div>`;
+          } else {
+            document.getElementById('nft-list').innerHTML = `
+              <div class="nft-grid">
+                ${tokenIds.map((id,i) => `
+                  <div class="nft-card">
+                    <div class="nft-icon" style="background:linear-gradient(135deg,${nftColors[i%nftColors.length]})">🏅</div>
+                    <div class="nft-id">Badge #${id}</div>
+                    <div class="nft-ep">Epoch 3</div>
+                    <a class="nft-link" href="https://sepolia.etherscan.io/token/${NFT_CONTRACT}?a=${id}" target="_blank">View on Etherscan ↗</a>
+                  </div>`).join('')}
+              </div>
+              ${nftBal > tokenIds.length ? `<div class="empty" style="margin-top:8px">+${nftBal - tokenIds.length} more badge${nftBal - tokenIds.length !== 1 ? 's' : ''} held</div>` : ''}`;
+          }
+        }
+
+        // ── Daily breakdown ─────────────────────────────────────────────────
+        const sortedDays = Object.keys(byDay).sort((a,b) => new Date('1 ' + b) - new Date('1 ' + a)).slice(0, 14);
+        document.getElementById('daily').innerHTML = sortedDays.length === 0
+          ? '<div class="empty">No activity found.</div>'
+          : sortedDays.map(day => {
+              const d = byDay[day];
+              return `<div class="dr-row">
+                <div class="dr-date">${day}</div>
+                <div class="dr-stats">
+                  <div class="dr-s"><div class="dr-v">${d.swaps}</div><div class="dr-l">swaps</div></div>
+                  <div class="dr-s"><div class="dr-v">${d.badges}</div><div class="dr-l">badges</div></div>
+                  <div class="dr-s"><div class="dr-v">${d.vol.toFixed(3)}</div><div class="dr-l">ETH</div></div>
+                  <div class="dr-s"><div class="dr-v" style="color:var(--spt);font-weight:500">+${d.sp}</div><div class="dr-l">SP</div></div>
+                </div>
+              </div>`;
+            }).join('');
+
+        // ── Transaction history ─────────────────────────────────────────────
+        const recent = txs.slice(0, 15);
+        document.getElementById('txlist').innerHTML = recent.length === 0
+          ? '<div class="empty">No interactions found with the Stabilizer contract for this wallet.</div>'
+          : recent.map(tx => {
+              const type  = classifyTx(tx);
+              const cls   = type === 'swap' ? 'tx-sw' : type === 'badge' ? 'tx-ba' : 'tx-ot';
+              const eth   = weiToEth(tx.value);
+              const isOut = tx.from.toLowerCase() === wallet.toLowerCase();
+              const sp    = calcSP(type);
+              return `<div class="tx-row">
+                <span class="tx-type ${cls}">${type}</span>
+                <a class="tx-hash" href="https://sepolia.etherscan.io/tx/${tx.hash}" target="_blank">${shortHash(tx.hash)}</a>
+                <span class="tx-val" style="color:${isOut ? 'var(--ts)' : 'var(--ok)'}">
+                  ${parseFloat(eth) > 0 ? (isOut ? '-' : '+') + eth + ' ETH' : ''}
+                </span>
+                <span class="tx-sp">+${sp} SP</span>
+                <span class="tx-age">${timeAgo(tx.timeStamp)}</span>
+              </div>`;
+            }).join('');
+
+        // ── Activity chart ──────────────────────────────────────────────────
+        const chartDays = Object.keys(byDay).reverse().slice(-14);
+        if (actChart) actChart.destroy();
+        actChart = new Chart(document.getElementById('actChart'), {
+          type: 'bar',
+          data: {
+            labels: chartDays,
+            datasets: [
+              { label: 'Transactions', data: chartDays.map(k => byDay[k].tx), backgroundColor: '#1D9E75', borderRadius: 3, borderWidth: 0, yAxisID: 'y'  },
+              { label: 'SP earned',    data: chartDays.map(k => byDay[k].sp), backgroundColor: '#7F77DD', borderRadius: 3, borderWidth: 0, yAxisID: 'y2' }
+            ]
+          },
+          options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false },
+              tooltip: { callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y}${ctx.datasetIndex === 1 ? ' SP' : ' txns'}` } }
+            },
+            scales: {
+              x:  { ticks: { font: { size: 10 }, color: '#6b9b6b', autoSkip: true, maxTicksLimit: 7 }, grid: { display: false } },
+              y:  { position: 'left',  ticks: { font: { size: 10 }, color: '#6b9b6b', stepSize: 1 }, grid: { color: 'rgba(29,158,117,.07)' } },
+              y2: { position: 'right', ticks: { font: { size: 10 }, color: '#7F77DD' }, grid: { display: false } }
+            }
+          }
+        });
+
+      } catch (e) {
+        showErr('Failed to fetch data. Error: ' + e.message);
+      }
+    }
+  </script>
+
+
+</body></html>
